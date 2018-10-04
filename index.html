@@ -1,104 +1,110 @@
 <!DOCTYPE html>
 <html>
-<head>
-<title>Music Finder</title>
 
-<link rel="stylesheet" type="text/css" href="main.css">
-<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+<head>
+  <title>Music Finder</title>
+
+  <link rel="stylesheet" type="text/css" href="main.css">
+  <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
 </head>
-<body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-primary">
-  <a class="navbar-brand" href="weather.html"><strong><span id ="logo">Music Finder!</span></strong></a>
-  &emsp;&emsp;
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  &emsp;&emsp;
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" id = "searchField" placeholder="Search Itunes" aria-label="Search">
-      &emsp;&emsp;
-      <button class="btn btn-success btn-lg" id="exchangeButton" type="submit" value="Submit">Search</button>
-    </form>
+
+<body style="background-color:#d9dadb;">
+  <div class="container-fluid; shadow p-3 mb-5 rounded  border border-light" id="header" style="background-color:#eff4f9; display:flex; flex-direction:column;">
+    <div style="display:flex; flex-direction:row;">
+      <div style="flex:1">
+        <div style="display:inline-block">
+          <a class="navbar-brand" href="index.html"><strong><span id ="logo" style="color:black">Music Finder!</span></strong></a>
+          <p>"The ease of searching for music on Itunes without the hassle of going to Itunes!"</p>
+        </div>
+        <div style="display:inline-block; float:right">
+          <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" id="searchField" placeholder="Search Itunes" aria-label="Search">
+            <button class="btn btn-success btn-lg" id="exchangeButton" type="submit" value="Submit">Search</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
   </div>
-</nav>
-<div id = "main_body">  
-<div id ="divider"></div><div id ="section"></div>
-<h1 id = "div title">Results:</h1>
-<div id="search_result"><ul class="list-group">Enter a search term to see your results!</ul></div></div>
+  <div id="search_result" style="padding-left:15px;">
+    <ul class="list-group">Enter a search term to see your results!</ul>
+  </div>
 
-<script>
-$(document).ready(function() 
-{
+  <script>
+    $(document).ready(function() {
+      
+    });
 
-});
-
-$("#exchangeButton").click(function(e) 
-{
-    e.preventDefault();
-    var value = $("#searchField").val();
-    var myurl = "https://itunes.apple.com/search?term=" + value;
-    $.ajax({
-    url : myurl,
-    dataType : "json",
-    success : function(json) 
-    {
-        console.log(json);
-        var results = "";
-        results += '<h1>We searched keyword "' + value + '" and found ' + json.resultCount + ' results</h1><br>';
-        results += "<div class=\"container\"><div class=\"row\">";
-        for (var i = 0; i < json.results.length; i++) 
-        {
+    $("#exchangeButton").click(function(e) {
+      e.preventDefault();
+      var value = $("#searchField").val();
+      var myurl = "https://itunes.apple.com/search?term=" + value;
+      $.ajax({
+        url: myurl,
+        dataType: "json",
+        success: function(json) {
+          console.log(json);
+          var results = "";
+          results += '<h3>Searching keyword "' + value + '" returned ' + json.resultCount + ' results:</h3><br>';
+          results += "<div class=\"container\"><div class=\"row\">";
+          for (var i = 0; i < json.results.length; i++) {
             var imageurl = json.results[i].artworkUrl100;
             results += "<div class=\"col-md-4\"><div class=\"colcontainer\"><div id=\"result" + i + "\" class=\"text-center\">";
-            results += "<img class=\"rounded\" width = \"60%;\" height = \"19%;\" src="+ imageurl + "></div>";
+            results += "<img class=\"rounded\" width = \"60%;\" height = \"19%;\" src=" + imageurl + "></div>";
             results += "<table class=\"table table-striped\">";
             var trackname = json.results[i].trackCensoredName;
             if (trackname == null)
               trackname = "";
             if (trackname.length > 20) {
-            trackname = trackname.substring(0, 20);
-            trackname += "...";
-          }
-          results += "<tbody><tr><td class=\"boldtd\">Title</td>";
-          results += "<td>" + trackname + "</td></tr></tbody>";
-          results += "<tbody><tr><td class=\"boldtd\">Artist</td>";
-          var artist = json.results[i].artistName;
-          if (artist.length > 20) {
-            artistname = artist.substring(0, 20);
-            artist += "...";
-          }
-          results += "<td>" + artist + "</td></tr></tbody>";
-          results += "<tbody><tr><td class=\"boldtd\">Release Date</td>";
-          var releasdate = json.results[i].releaseDate.substring(0,10);
-          results += "<td>" + releasdate + "</td></tr></tbody></table>";
-          results += "<div class=\"text-center\">";
-          results += "<audio controls>";
-          results += "<source src=\"" + json.results[i].previewUrl + "\" type=\"audio/mpeg\" />";
-          results += "<source src=\"" + json.results[i].previewUrl + "\" type=\"audio/ogg\" /></audio>";
-          if(json.results[i].trackViewUrl != null)
-          results += "<h4 class=\"text-center\"><a href=" + json.results[i].trackViewUrl + " target=\"_blank\">see more on iTunes Store</a></h4>";
-          else
-                    results += "<h4 class=\"text-center\">Link not available :(</h4>";
+              trackname = trackname.substring(0, 20);
+              trackname += "...";
+            }
+            results += "<tbody><tr><td class=\"boldtd\">Title</td>";
+            results += "<td>" + trackname + "</td></tr></tbody>";
+            results += "<tbody><tr><td class=\"boldtd\">Artist</td>";
+            var artist = json.results[i].artistName;
+            if (artist.length > 20) {
+              artistname = artist.substring(0, 20);
+              artist += "...";
+            }
+            results += "<td>" + artist + "</td></tr></tbody>";
+            results += "<tbody><tr><td class=\"boldtd\">Release Date</td>";
+            var releasdate = json.results[i].releaseDate.substring(0, 10);
+            results += "<td>" + releasdate + "</td></tr></tbody></table>";
+            results += "<div class=\"text-center\">";
+            results += "<audio controls>";
+            results += "<source src=\"" + json.results[i].previewUrl + "\" type=\"audio/mpeg\" />";
+            results += "<source src=\"" + json.results[i].previewUrl + "\" type=\"audio/ogg\" /></audio>";
+            if (json.results[i].trackViewUrl != null)
+              results += "<h4 class=\"text-center\"><a href=" + json.results[i].trackViewUrl + " target=\"_blank\">see more on iTunes Store</a></h4>";
+            else
+              results += "<h4 class=\"text-center\">Link not available :(</h4>";
 
-          results += "</div></div></div>";
-        }
-        results += "</div></div>";
-        $("#search_result").html(results);
-        for (var i = 0; i < json.results.length; i++) {
-          $("#result" + i).hover(function() {
-            console.log(i + "\n")
-            $("#result" + i).fadeIn(100)
+            results += "</div></div></div>";
+          }
+          results += "</div></div>";
+          $("#search_result").html(results);
+          // for (var i = 0; i < json.results.length; i++) {
+          //   $("#result" + i).hover(function() {
+          //     console.log(i + "\n")
+          //     $("#result" + i).fadeIn(100)
+          //   })
+          // }
+          $("#exchangeButton").click(function() {
+            $(".logo").toggle("bounce", {times:3}, "slow")
           })
+          
         }
-    }
-  })
-});
-
-</script>
+      })
+    });
+  </script>
 </body>
+
 </html>
